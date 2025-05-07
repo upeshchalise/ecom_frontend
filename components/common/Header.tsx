@@ -47,14 +47,18 @@ const components: { title: string; href: string; description: string }[] = [
 
 export const Header = () => {
     return (
-        <div className="flex justify-around items-center p-4">
+        <div className="flex justify-between items-center py-4 px-2">
 
             {/* logo */}
-            <div className="w-[100px] h-[100px] relative">
+            {/* <div className="w-[100px] h-[100px] relative">
                 <Image fill src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "contain" }} className="rounded-full h-full" />
-            </div>
+            </div> */}
+
+<Image height={100} width={100} src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "fill" }} className="rounded-full h-full" />
+<div className="flex gap-4 items-center">
+
             {/* category */}
-            <NavigationMenu>
+            <NavigationMenu className="z-50">
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
@@ -76,7 +80,7 @@ export const Header = () => {
             </NavigationMenu>
 
             {/* search */}
-            <div className="w-[400px]">
+            <div className=" hidden md:block w-[400px]">
 
                 <Input type="text" placeholder="Search products" />
             </div>
@@ -90,6 +94,8 @@ export const Header = () => {
                 <ShoppingCart />
             </div>
             {/* login */}
+            </div>
+
         </div>
     )
 }

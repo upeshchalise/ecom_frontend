@@ -82,7 +82,7 @@ export const Header = () => {
             {/* search */}
             <div className=" hidden md:block w-[400px]">
 
-                <Input type="text" placeholder="Search products" />
+                <Input type="text" placeholder="Search products" className="bg-[#fdfaf5]"/>
             </div>
             {/* cart and profile */}
             {/* <h1>cart and profile</h1> */}

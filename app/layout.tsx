@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono,Noto_Serif_Georgian } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
+import { ReactQueryClientProvider } from "@/components/react-query-client-provider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,17 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={` ${geistSans.variable} ${geistMono.variable} antialiased px-4 bg-[#f4efe6] text-[#4b3e2a]`}
-        style={{
-          fontFamily: `'Georgia', serif`,
-        }}
-      >
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body
+          className={` ${geistSans.variable} ${geistMono.variable} antialiased px-4 bg-[#f4efe6] text-[#4b3e2a]`}
+          style={{
+            fontFamily: `'Georgia', serif`,
+          }}
+        >
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

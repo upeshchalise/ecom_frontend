@@ -29,7 +29,7 @@ const Signup = () => {
             last_name: "",
             email: "",
             password: "",
-            contact: "",
+            phone: "",
             address: "",
             image: ""
         }
@@ -95,9 +95,10 @@ const Signup = () => {
                     <Input type="email" placeholder="Email" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("email")} />
                     {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                     <Input type="password" placeholder="Password" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("password")} />
-                    {errors.password && <span className="text-red-500">{errors.password.message}</span>}
-                    <Input type="string" placeholder="Contact" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("contact")} />
-                    {errors.contact && <span className="text-red-500">{errors.contact.message}</span>}
+                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+                    <Input type="string" placeholder="phone" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("phone")} />
+                    {errors.phone && <span className="text-red-500">{errors.phone.message}</span>}
                     <Input type="text" placeholder="Address" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("address")} />
                     {errors.address && <span className="text-red-500">{errors.address.message}</span>}
 

@@ -1,6 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { signin } from "@/lib/api/api";
+import { UserRole } from "@/lib/enums";
 import { SigninSchema } from "@/lib/schema/user";
 import { useUserStore } from "@/lib/store/user";
 import { AuthenticatedUser } from "@/lib/types/user";
@@ -46,7 +47,12 @@ const Signin = () => {
                     role: data.user.role
                 }
             })
-            router.push("/");
+            if(data.user.role === UserRole.ADMIN) {
+                router.push("/admin/dashboard");
+            }else {
+
+                router.push("/");
+            }
         },
         onError: (error) => {
             toast.error("Error logging in user");

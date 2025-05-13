@@ -24,7 +24,6 @@ export default function AuthWrapper({ children, role }: { children: React.ReactN
       console.log("payload", payload);
 
       if (payload.role !== role) {
-        debugger
         router.push('/signin');
       } else {
         setAuthorized(true);

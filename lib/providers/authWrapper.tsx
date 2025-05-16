@@ -4,13 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useUserStore } from '../store/user';
 import { UserRole } from '../enums';
 
-export default function AuthWrapper({ children, role }: { children: React.ReactNode; role: string }) {
+export default function AuthWrapper({ children, role }: Readonly<{ children: React.ReactNode; role: string }>) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const { user } = useUserStore();
 
   useEffect(() => {
-    // const token = localStorage.getItem('token');
     const isAdmin = user.user.role === UserRole.ADMIN;
 
     if (!isAdmin) {

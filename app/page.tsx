@@ -4,27 +4,18 @@ import { getAllProducts } from "@/lib/api/api";
 import { Product } from "@/lib/types/response";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-
-
-  // const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  // const [page, _setPage] = useState(Number(queryParams.get('page')) || 1);
-  // const [search, _setSearch] = useState(queryParams.get('search') || '');
-  // const [pageSize, _setPageSize] = useState(5);
-
-
-  const queryParams = useMemo(() => new URLSearchParams(window.location.search), [window.location.search]);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("prod");
+  const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(20);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const queryParams = new URLSearchParams(window.location.search);
       const pageParam = Number(queryParams.get('page')) || 1;
-      const searchParam = queryParams.get('search') || '';
+      const searchParam = queryParams.get('search') ?? '';
       const pageSizeParam = Number(queryParams.get('pagesize')) || 20;
 
       setPage(pageParam);
@@ -49,9 +40,7 @@ export default function Home() {
 
   return (
     <>
-    {/* <div>
-      <Image src={"/banner.png"} alt="thrift store banner" width={1920} height={0} className="w-full h-[400px]"/>
-    </div> */}
+   
     <div className="w-full  md:w-[98%] mx-auto h-[400px] relative rounded-md">
     <Image fill src={"/banner.png"} alt={"thrift store banner"}  style={{objectFit: "cover"}} className="rounded-md"/>
     </div>

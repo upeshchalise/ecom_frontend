@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardFooter } from "../ui/card"
 import { Product } from "@/lib/types/response"
 
 export const ProductCard = ({ data }: { data: Product }) => {

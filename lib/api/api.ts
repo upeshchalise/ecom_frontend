@@ -17,3 +17,8 @@ export const getAllProducts = async ({paginationData}:{paginationData: Paginatio
     const response = await axiosInstance.get("/products", {params: paginationData});
     return response
 }
+
+export const getProductById = async (productId: string): Promise<AxiosResponse<Product>> => {
+    const response = await axiosInstance.get(`/product/${productId}`);
+    return response;
+}

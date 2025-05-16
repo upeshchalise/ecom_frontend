@@ -4,6 +4,7 @@ import { getAllProducts } from "@/lib/api/api";
 import { Product } from "@/lib/types/response";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -47,7 +48,9 @@ export default function Home() {
     <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
      {isLoading && <p>Loading...</p>}
       {data?.data?.data?.map((product:Product) => (
-        <ProductCard data={product} key={product.id}/>
+       <Link href={`/product/${product.id}`} key={product.id}>
+         <ProductCard data={product} key={product.id}/>
+       </Link>
       ))}
       
 

@@ -5,6 +5,7 @@ import React from "react"
 import { Input } from "../ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { ShoppingCart } from "lucide-react"
+import Link from "next/link"
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -53,47 +54,48 @@ export const Header = () => {
             {/* <div className="w-[100px] h-[100px] relative">
                 <Image fill src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "contain" }} className="rounded-full h-full" />
             </div> */}
+            <Link href="/">
+                <Image height={100} width={100} src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "fill" }} className="rounded-full h-full" />
+            </Link>
+            <div className="flex gap-4 items-center">
 
-<Image height={100} width={100} src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "fill" }} className="rounded-full h-full" />
-<div className="flex gap-4 items-center">
+                {/* category */}
+                <NavigationMenu className="z-50">
+                    <NavigationMenuList>
+                        <NavigationMenuItem>
+                            <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                    {components.map((component) => (
+                                        <ListItem
+                                            key={component.title}
+                                            title={component.title}
+                                            href={component.href}
+                                        >
+                                            {component.description}
+                                        </ListItem>
+                                    ))}
+                                </ul>
+                            </NavigationMenuContent>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
+                </NavigationMenu>
 
-            {/* category */}
-            <NavigationMenu className="z-50">
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                {components.map((component) => (
-                                    <ListItem
-                                        key={component.title}
-                                        title={component.title}
-                                        href={component.href}
-                                    >
-                                        {component.description}
-                                    </ListItem>
-                                ))}
-                            </ul>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
+                {/* search */}
+                <div className=" hidden md:block w-[400px]">
 
-            {/* search */}
-            <div className=" hidden md:block w-[400px]">
-
-                <Input type="text" placeholder="Search products" className="bg-[#fdfaf5]"/>
-            </div>
-            {/* cart and profile */}
-            {/* <h1>cart and profile</h1> */}
-            <div className="flex gap-4">
-                <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <ShoppingCart />
-            </div>
-            {/* login */}
+                    <Input type="text" placeholder="Search products" className="bg-[#fdfaf5]" />
+                </div>
+                {/* cart and profile */}
+                {/* <h1>cart and profile</h1> */}
+                <div className="flex gap-4">
+                    <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <ShoppingCart />
+                </div>
+                {/* login */}
             </div>
 
         </div>

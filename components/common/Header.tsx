@@ -1,10 +1,10 @@
 import Image from "next/image"
 import React from "react"
-import { Input } from "../ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { CategoryDropdown } from "./CategoryDropdown"
+import { Search } from "./Search"
 
 export const Header = () => {
 
@@ -24,10 +24,7 @@ export const Header = () => {
                 <CategoryDropdown />
 
                 {/* search */}
-                <div className=" hidden md:block w-[400px]">
-
-                    <Input type="text" placeholder="Search products" className="bg-[#fdfaf5]" />
-                </div>
+                <Search />
                 {/* cart and profile */}
                 {/* <h1>cart and profile</h1> */}
                 <div className="flex gap-4">

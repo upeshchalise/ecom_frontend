@@ -63,7 +63,7 @@ export const CategoryDropdown = () => {
                                         <ListItem
                                             key={component.id}
                                             title={component.name}
-                                            href={`/category/${component.id}`}
+                                            // href={component.id}
                                         />
                                     ))}
                                 </ul>

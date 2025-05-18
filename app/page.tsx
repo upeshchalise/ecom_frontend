@@ -6,24 +6,25 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(20);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const queryParams = new URLSearchParams(window.location.search);
-      const pageParam = Number(queryParams.get('page')) || 1;
-      const searchParam = queryParams.get('search') ?? '';
-      const pageSizeParam = Number(queryParams.get('pagesize')) || 20;
 
-      setPage(pageParam);
-      setSearch(searchParam);
-      setPageSize(pageSizeParam);
-    }
-  }, []);
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const pageParam = Number(params.get('page')) || 1;
+  const searchParam = params.get('search') ?? '';
+  const pageSizeParam = Number(params.get('pagesize')) || 20;
+
+  setPage(pageParam);
+  setSearch(searchParam);
+  setPageSize(pageSizeParam);
+}, [useSearchParams()]);
+
 
 
   const {data,isLoading} = useQuery({
@@ -49,7 +50,7 @@ export default function Home() {
      {isLoading && <p>Loading...</p>}
       {data?.data?.data?.map((product:Product) => (
        <Link href={`/product/${product.id}`} key={product.id}>
-         <ProductCard data={product} key={product.id}/>
+         <ProductCard data={product}/>
        </Link>
       ))}
       

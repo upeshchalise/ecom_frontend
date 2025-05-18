@@ -30,6 +30,7 @@ const GetProductDetails = () => {
             <Image src={data?.data?.image ?? "/banner.png"} alt={"thrift store banner"} width={500} height={500} className="w-full max-h-[400px] object-contain border border-[#b8a98d] rounded-lg" />
             <h1 className="text-3xl font-bold">{data?.data?.name}</h1>
             <p className="text-lg">{data?.data?.description}</p>
+            <p className="text-xl font-bold">Rs. {data?.data?.price}</p>
             <button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]">
                 Add to Cart
             </button>

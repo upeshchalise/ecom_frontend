@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { UserSignin, UserSignup } from "../types/user";
-import { AuthUser, PaginationMeta, PaginationRequest, Product } from "../types/response";
+import { AuthUser, Category, PaginationMeta, PaginationRequest, Product } from "../types/response";
 import { AxiosResponse } from "axios";
 
 
@@ -20,5 +20,10 @@ export const getAllProducts = async ({paginationData}:{paginationData: Paginatio
 
 export const getProductById = async (productId: string): Promise<AxiosResponse<Product>> => {
     const response = await axiosInstance.get(`/product/${productId}`);
+    return response;
+}
+
+export const getAllCategories = async (): Promise<AxiosResponse<Category[]>> => {
+    const response = await axiosInstance.get("/categories");
     return response;
 }

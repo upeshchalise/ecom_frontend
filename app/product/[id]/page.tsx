@@ -23,12 +23,16 @@ const GetProductDetails = () => {
         // }}
         // >
         <div className="mx-auto max-w-[700px] p-8 bg-[#fffaf3] border border-[#d6c7b0] rounded-xl">
-            <Image src={data?.data?.image ?? "/banner.png"} alt={"thrift store banner"} width={500} height={500} className="w-full max-h-[400px] object-contain border border-[#b8a98d] rounded-lg"/>
+            <div>
+                <Image src={data?.data?.image ?? "/banner.png"} alt={"thrift store banner"} width={40} height={40} className="w-[40px] h-[40px] object-cover border border-[#b8a98d] rounded-full" />
+                <span>Added by: {`${data?.data?.user?.firstName} ${data?.data?.user?.lastName}`}</span>
+            </div>
+            <Image src={data?.data?.image ?? "/banner.png"} alt={"thrift store banner"} width={500} height={500} className="w-full max-h-[400px] object-contain border border-[#b8a98d] rounded-lg" />
             <h1 className="text-3xl font-bold">{data?.data?.name}</h1>
             <p className="text-lg">{data?.data?.description}</p>
-<button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]">
-  Add to Cart
-</button>
+            <button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]">
+                Add to Cart
+            </button>
         </div>
         // </section>
     )

@@ -49,4 +49,9 @@ export interface Product {
   updatedAt: string; // ISO date string
   deletedAt: string | null;
   categories: Category[];
+  user?: {
+    firstName: string;  
+    lastName: string;
+    image: string | null
+  }
 }

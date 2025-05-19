@@ -21,7 +21,9 @@ export const Search = () => {
       
       params.set("page", "1"); 
       params.set("pagesize", "20")
-      router.push(`?${params.toString()}`);
+      if (search) {
+        router.push(`?${params.toString()}`);
+      }
     }, 500);
 
     return () => clearTimeout(handler);

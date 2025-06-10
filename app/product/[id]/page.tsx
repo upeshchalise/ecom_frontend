@@ -3,6 +3,7 @@ import { getProductById } from "@/lib/api/api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams } from "next/navigation"
+import { useCartStore } from "@/lib/store/cart";
 
 const GetProductDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -13,8 +14,24 @@ const GetProductDetails = () => {
 
     })
 
+    const addItem = useCartStore((state) => state.addItem);
+
     if (isLoading) return <p>Loading...</p>;
 
+
+    function handleAddToCart() {
+        if (!data?.data) return;
+
+        const product = data.data;
+
+        addItem({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: 1,
+            image: product.image ?? '',
+        });
+    }
 
     return (
         // <section className=" items-center w-full md:w-1/2 md:mx-auto bg-[#fffaf3] border border-[#d6c7b0] rounded-xl"
@@ -31,7 +48,7 @@ const GetProductDetails = () => {
             <h1 className="text-3xl font-bold">{data?.data?.name}</h1>
             <p className="text-lg">{data?.data?.description}</p>
             <p className="text-xl font-bold">Rs. {data?.data?.price}</p>
-            <button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]">
+            <button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]" onClick={handleAddToCart}>
                 Add to Cart
             </button>
         </div>

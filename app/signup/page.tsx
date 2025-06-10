@@ -20,7 +20,7 @@ const Signup = () => {
     const [url, setUrl] = useState<string>("");
 
     const router = useRouter();
-    const { mutate, data } = useFileUpload();
+    const { mutate } = useFileUpload();
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof SignupSchema>>({
         resolver: zodResolver(SignupSchema),

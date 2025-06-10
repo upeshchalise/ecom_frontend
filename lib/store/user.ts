@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import { AuthenticatedUser, User } from "../types/user";
+import { AuthenticatedUser } from "../types/user";
 import { persist } from 'zustand/middleware';
 import { UserRole } from '../enums';
 

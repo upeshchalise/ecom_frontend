@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image"
 import React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -5,8 +6,11 @@ import { ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { CategoryDropdown } from "./CategoryDropdown"
 import { Search } from "./Search"
+import { useCartStore } from "@/lib/store/cart"
 
 export const Header = () => {
+        const cart = useCartStore((state) => state.cart);
+       
 
     return (
         <div className="flex justify-between items-center py-4 px-2">
@@ -32,7 +36,10 @@ export const Header = () => {
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <ShoppingCart />
+                    <div className="relative h-8 w-8">
+                    <ShoppingCart className="h-full w-full"/>
+                    <span className="bg-yellow-500 rounded-full text-center absolute -top-1 -right-1 h-5 w-5 min-w-fit min-h-fit">{Number(cart?.items?.length)}</span>
+                    </div>
                 </div>
                 {/* login */}
             </div>

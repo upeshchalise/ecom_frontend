@@ -20,7 +20,6 @@ export default function AuthWrapper({ children, role }: Readonly<{ children: Rea
     try {
 
       const payload = JSON.parse(atob(user.token.access_token.split('.')[1]));
-      console.log("payload", payload);
 
       if (payload.role !== role) {
         router.push('/signin');

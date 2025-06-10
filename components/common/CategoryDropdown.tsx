@@ -50,8 +50,6 @@ export const CategoryDropdown = () => {
         queryFn: () => getAllCategories()
     })
 
-    console.log(data?.data,"data")
-    console.log("isLoading", isLoading);
     return (
         <NavigationMenu className="z-50">
                     <NavigationMenuList>

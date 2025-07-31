@@ -24,6 +24,9 @@ export const Search = () => {
       if (search) {
         router.push(`?${params.toString()}`);
       }
+      if(search.trim() === "") {
+        router.push("/");
+      }
     }, 500);
 
     return () => clearTimeout(handler);

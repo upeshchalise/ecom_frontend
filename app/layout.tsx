@@ -30,12 +30,12 @@ export default function RootLayout({
     <ReactQueryClientProvider>
       <html lang="en">
         <body
-          className={` ${geistSans.variable} ${geistMono.variable} antialiased px-4 bg-[#f4efe6] text-[#4b3e2a]`}
+          className={` ${geistSans.variable} ${geistMono.variable} antialiased bg-[#f4efe6] text-[#4b3e2a]`}
           style={{
             fontFamily: `'Georgia', serif`,
           }}
         >
-          <Header />
+          <Header />          
           {children}
           <Footer />
         </body>

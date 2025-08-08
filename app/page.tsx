@@ -43,7 +43,7 @@ useEffect(() => {
   return (
     <>
    
-    <div className="w-full  md:w-[98%] mx-auto h-[400px] relative rounded-md">
+    <div className="w-full  md:w-[98%] mx-auto h-[400px] relative rounded-md overflow-y-auto">
     <Image fill src={"/banner.png"} alt={"thrift store banner"}  style={{objectFit: "cover"}} className="rounded-md"/>
     </div>
     <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
@@ -53,8 +53,6 @@ useEffect(() => {
          <ProductCard data={product}/>
        </Link>
       ))}
-      
-
     </div>
     </>
   );

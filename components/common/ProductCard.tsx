@@ -15,7 +15,7 @@ export const ProductCard = ({ data }: { data: Product }) => {
         {/* <p>Card Footer</p> */}
         <div className="flex justify-between w-full gap-2 font-semibold text-lg">
           <p>{data?.name}</p>
-          <p>${data?.price}</p>
+          <p>Rs. {data?.price}</p>
         </div>
         <div>
           {data?.description}

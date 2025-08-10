@@ -5,7 +5,7 @@ import { Product } from "@/lib/types/response"
 export const ProductCard = ({ data }: { data: Product }) => {
   return (
 
-    <Card className="!px-0">
+    <Card className="!px-0 h-full">
       <CardContent>
         <div className="w-full h-[200px] relative rounded-md">
           <Image fill src={data?.image ?? "/banner.png"} alt={"thrift store banner"} style={{ objectFit: "cover" }} className="rounded-md" />

@@ -51,17 +51,41 @@ export const useCartStore = create<CartStore>()(persist((set) => ({
         };
     }),
     removeItem: (id) => set((state) => {
-        const updatedItems = state.cart.items.filter(item => item.id !== id);
-        const updatedTotalPrice = updatedItems.reduce((total, item) => {
-            return total + (item.price * item.quantity);
-        }, 0);
-        return {
-            cart: {
-                ...state.cart,
-                items: updatedItems,
-                totalPrice: updatedTotalPrice
-            }
-        };
+        const itemToRemove = state.cart.items.find(item => item.id === id);
+        if (itemToRemove && itemToRemove.quantity === 1) {
+            const updatedItems = state.cart.items.filter(item => item.id !== id);
+            const updatedTotalPrice = updatedItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            return {
+                cart: {
+                    ...state.cart,
+                    items: updatedItems,
+                    totalPrice: updatedTotalPrice
+                }
+            };
+        } else if (itemToRemove) {
+            const updatedItems = state.cart.items.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        quantity: item.quantity - 1
+                    };
+                }
+                return item;
+            });
+            const updatedTotalPrice = updatedItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            return {
+                cart: {
+                    ...state.cart,
+                    items: updatedItems,
+                    totalPrice: updatedTotalPrice
+                }
+            };
+        }
+        return state;
     }),
 
     clearCart: () => set(() => ({ cart: defaultCartState }))

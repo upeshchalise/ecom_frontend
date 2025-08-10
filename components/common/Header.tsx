@@ -69,12 +69,12 @@ export const Header = () => {
                                                 {cart.items.map((item) => (
                                                     <tr key={item.id}>
                                                         <td>
-                                                            <Image src={item.image ? item.image: "/thrift-logo.svg"} alt={item.name} width={50} height={50} className="w-[200px] max-w-[200px] h-full object-contain" />
+                                                            <Image src={item.image ? item.image: "/thrift-logo.svg"} alt={item.name} width={50} height={50} className="w-[200px] max-w-[200px] max-h-[200px] h-full object-contain" />
                                                             <span>
                                                                 {item.name}
                                                             </span>
                                                         </td>
-                                                        <td>{item.quantity}</td>
+                                                        <td><button className="p-1 border" onClick={() => useCartStore.getState().removeItem(item.id)}>-</button> {item.quantity} <button className="p-1 border " onClick={() => useCartStore.getState().addItem(item)}>+</button></td>
                                                         <td>${item.price.toFixed(2)}</td>
                                                     </tr>
                                                 ))}

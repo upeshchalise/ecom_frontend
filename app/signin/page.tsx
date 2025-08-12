@@ -19,7 +19,7 @@ const Signin = () => {
 
     const { setUser } = useUserStore();
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof SigninSchema>>({
+    const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof SigninSchema>>({
         resolver: zodResolver(SigninSchema),
         defaultValues: {
             email: "",
@@ -76,7 +76,7 @@ const Signin = () => {
 
                     <button className="w-full p-2.5 bg-[#8b6e4b] text-white border-none rounded-xl font-bold cursor-pointer hover:bg-[#6e5435]">Login</button>
 
-                    <p className="text-center text-[#6e5435]">Don't have an account? <Link href="/signup" className="font-semibold cursor-pointer">Signup</Link></p>
+                    <p className="text-center text-[#6e5435]">Dont have an account? <Link href="/signup" className="font-semibold cursor-pointer">Signup</Link></p>
                 </form>
             </div>
         </section>

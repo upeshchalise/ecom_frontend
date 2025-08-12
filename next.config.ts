@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       'picsum.photos',
       'loremflickr.com'
     ]
+  },
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
+experimental: {
   }
 };
 

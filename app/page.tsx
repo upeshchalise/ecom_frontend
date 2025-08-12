@@ -6,13 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(20);
-
+const [initialized, setInitialized] = useState(false);
 
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
@@ -23,7 +23,22 @@ useEffect(() => {
   setPage(pageParam);
   setSearch(searchParam);
   setPageSize(pageSizeParam);
-}, [useSearchParams()]);
+console.log("console.log,effect1", pageParam, params, window.location.pathname)
+  setInitialized(true);
+}, []); 
+
+
+
+// useEffect(() => {
+//   const params = new URLSearchParams(window.location.search);
+//   const pageParam = Number(params.get('page')) || 1;
+//   const searchParam = params.get('search') ?? '';
+//   const pageSizeParam = Number(params.get('pagesize')) || 20;
+
+//   setPage(pageParam);
+//   setSearch(searchParam);
+//   setPageSize(pageSizeParam);
+// }, [useSearchParams()]);
 
 
 
@@ -32,13 +47,26 @@ useEffect(() => {
     queryFn: () => getAllProducts({paginationData: {page,pageSize,search}}),
   })
   
-  useEffect(()=> {
-    const params = new URLSearchParams();
-    params.set('page', String(page));
-    params.set('search', search);
-    params.set('pagesize', String(pageSize));
-    window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-  },[page,search,pageSize])
+  // useEffect(()=> {
+  //   const params = new URLSearchParams();
+  //   params.set('page', String(page));
+  //   params.set('search', search);
+  //   params.set('pagesize', String(pageSize));
+  //   window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+  // },[page,search,pageSize])
+
+  useEffect(() => {
+  if (!initialized) return;
+  const params = new URLSearchParams();
+  params.set('page', String(page));
+  params.set('search', search);
+  params.set('pagesize', String(pageSize));
+  console.log("console.log,effect2", params)
+  console.log("effect 2 url", window.location.pathname, window.location.href, window.location)
+
+  window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+}, [page, search, pageSize, initialized]);
+
 
   return (
     <>

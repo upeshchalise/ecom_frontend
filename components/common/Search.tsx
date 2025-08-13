@@ -25,7 +25,7 @@ export const Search = () => {
         router.push(`?${params.toString()}`);
       }
       if(search.trim() === "") {
-        router.push("/");
+        params.delete("search")
       }
     }, 500);
 

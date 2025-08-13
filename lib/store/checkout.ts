@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import { Checkout } from "../types/checkout";
+import { persist } from "zustand/middleware";
 
 interface CheckoutStore {
 item: Checkout,
@@ -11,7 +12,7 @@ export const defaultCheckoutState: Checkout = {
     items: [],
 }
 
-export const useCheckoutStore = create<CheckoutStore>()(((set) => ({
+export const useCheckoutStore = create<CheckoutStore>()(persist((set) => ({
     item: defaultCheckoutState,
     addItem: (item) => set((state) => {
         return {
@@ -21,4 +22,11 @@ export const useCheckoutStore = create<CheckoutStore>()(((set) => ({
         }
     }),
     clearCheckoutItem: () => set(() => ({ item: defaultCheckoutState }))
-})))
+}), {
+    name: "checkout-storage",
+    partialize(state) {
+        return {
+            item: state.item
+        }
+    },
+}))

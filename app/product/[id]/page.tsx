@@ -2,11 +2,16 @@
 import { getProductById } from "@/lib/api/api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/lib/store/cart";
+import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
+import { toast } from "sonner";
 
-const GetProductDetails = () => {
+export default function GetProductDetails() {
     const { id } = useParams<{ id: string }>();
+    const isLoggedIn = useIsAuthenticated();
+      const router = useRouter();
+    
     const { data, isLoading } = useQuery({
         queryKey: ['products', id],
         queryFn: () => getProductById(id),
@@ -20,6 +25,12 @@ const GetProductDetails = () => {
 
 
     function handleAddToCart() {
+        
+        if (!isLoggedIn) {
+            router.push("/signin");
+            // toast.error("You need to be logged in to add items to the cart.");
+            return;
+        }
         if (!data?.data) return;
 
         const product = data.data;
@@ -33,12 +44,15 @@ const GetProductDetails = () => {
         });
     }
 
+    if(!data?.data) return <p>Product not found</p>;
+
     return (
         // <section className=" items-center w-full md:w-1/2 md:mx-auto bg-[#fffaf3] border border-[#d6c7b0] rounded-xl"
         // style={{
         //     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)'
         // }}
         // >
+        
         <div className="mx-auto max-w-[700px] p-8 bg-[#fffaf3] border border-[#d6c7b0] rounded-xl">
             <div>
                 <Image src={data?.data?.image ?? "/banner.png"} alt={"thrift store banner"} width={40} height={40} className="w-[40px] h-[40px] object-cover border border-[#b8a98d] rounded-full" />
@@ -56,4 +70,6 @@ const GetProductDetails = () => {
     )
 }
 
-export default GetProductDetails
+// export default GetProductDetails
+
+export const dynamic = 'force-dynamic';

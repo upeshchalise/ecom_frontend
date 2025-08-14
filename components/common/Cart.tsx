@@ -12,28 +12,23 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { ShoppingCart } from "lucide-react"
 import { useCartStore } from "@/lib/store/cart"
 
-import { useCheckoutStore } from "@/lib/store/checkout"
 import Image from "next/image"
-import Link from "next/link"
+import { PaymentMethod } from "./PaymentMethod"
+import { useState } from "react"
 
 export const Cart = () => {
+    const [isCartOpen, setIsCartOpen] = useState(false);
     const cart = useCartStore((state) => state.cart);
-    // const checkout = useCheckoutStore((state) => state.item);
-    const setCheckout = useCheckoutStore((state) => state.addItem);
-    const clearCheckout = useCheckoutStore((state) => state.clearCheckoutItem);
-
-    const handleCheckout = () => {
-        clearCheckout();
-        cart?.items.forEach((item) => setCheckout(item));
-    };
+    
+   
     return (
-        <Dialog>
-            <DialogTrigger className="relative h-8 w-8">
+        <Dialog open={isCartOpen} onOpenChange={setIsCartOpen}>
+            <DialogTrigger className="relative h-8 w-8" onClick={()=> setIsCartOpen(true)}>
                 {/* <button className="relative h-8 w-8"> */}
                 <ShoppingCart className="h-full w-full" />
                 <span className="bg-yellow-500 rounded-full text-center absolute -top-1 -right-1 h-5 w-5 min-w-fit min-h-fit">{Number(cart?.items?.length)}</span>
                 {/* </button> */}
-            </DialogTrigger>
+            </DialogTrigger>    
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Your Cart</DialogTitle>
@@ -57,19 +52,19 @@ export const Cart = () => {
                                                 </span>
                                             </td>
                                             <td><button className="p-1 border" onClick={() => useCartStore.getState().removeItem(item.id)}>-</button> {item.quantity} <button className="p-1 border " onClick={() => useCartStore.getState().addItem(item)}>+</button></td>
-                                            <td>${item.price.toFixed(2)}</td>
+                                            <td>${Number(item.price).toFixed(2)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colSpan={2}>Total:</td>
-                                        <td>${cart.totalPrice.toFixed(2)}</td>
+                                        <td>${Number(cart.totalPrice).toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                        <td colSpan={3} className="text-right">
+                                        <td className="text-right" colSpan={2}>
                                             <DialogPrimitive.Close asChild>
-                                                <Link href="/checkout" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleCheckout}>Checkout</Link>
+                                                <PaymentMethod cart={cart.items} setIsCartOpen={setIsCartOpen}/>
                                             </DialogPrimitive.Close>
                                         </td>
                                     </tr>

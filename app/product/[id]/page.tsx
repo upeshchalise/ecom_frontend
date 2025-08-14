@@ -2,11 +2,16 @@
 import { getProductById } from "@/lib/api/api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/lib/store/cart";
+import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
+import { toast } from "sonner";
 
 export default function GetProductDetails() {
     const { id } = useParams<{ id: string }>();
+    const isLoggedIn = useIsAuthenticated();
+      const router = useRouter();
+    
     const { data, isLoading } = useQuery({
         queryKey: ['products', id],
         queryFn: () => getProductById(id),
@@ -20,6 +25,12 @@ export default function GetProductDetails() {
 
 
     function handleAddToCart() {
+        
+        if (!isLoggedIn) {
+            router.push("/signin");
+            // toast.error("You need to be logged in to add items to the cart.");
+            return;
+        }
         if (!data?.data) return;
 
         const product = data.data;

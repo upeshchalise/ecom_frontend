@@ -1,6 +1,9 @@
 'use client';
+import { CreateProductModal } from "@/components/common/CreateProduct";
 import { ProductCard } from "@/components/common/ProductCard";
+import { Button } from "@/components/ui/button";
 import { getAllProducts } from "@/lib/api/api";
+import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -13,6 +16,12 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(20);
 const [initialized, setInitialized] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const user = useUserStore((state) => state.user.user);
+    const isLoggedIn = !!user.id;
+
+
 
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
@@ -74,6 +83,17 @@ console.log("console.log,effect1", pageParam, params, window.location.pathname)
     <div className="w-full  md:w-[98%] mx-auto h-[400px] relative rounded-md overflow-y-auto">
     <Image fill src={"/banner.png"} alt={"thrift store banner"}  style={{objectFit: "cover"}} className="rounded-md"/>
     </div>
+{isLoggedIn && (
+        <Button
+          onClick={() => setOpenModal(true)}
+          className="bg-[#8b6f47] hover:bg-[#6b4c2e] text-white rounded px-6 py-2 mb-4"
+        >
+          + Add Product
+        </Button>
+      )}
+      <CreateProductModal open={openModal} onClose={() => setOpenModal(false)} />
+
+
     <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
      {isLoading && <p>Loading...</p>}
       {data?.data?.data?.map((product:Product) => (

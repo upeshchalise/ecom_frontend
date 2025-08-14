@@ -2,6 +2,11 @@ import axiosInstance from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // API call to upload the file
+
+interface UploadResponse {
+  url: string;
+  // Add other response properties if needed
+}
 const uploadFile = async (file: File): Promise<any> => {
     const formData = new FormData();
     formData.append("file", file);
@@ -23,7 +28,7 @@ const uploadFile = async (file: File): Promise<any> => {
 const useFileUpload = () => {
     const queryClient = useQueryClient();
 
-    return useMutation({
+    return useMutation<UploadResponse, Error, File>({
         mutationFn: uploadFile,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["files"] });

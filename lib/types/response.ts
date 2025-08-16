@@ -1,12 +1,8 @@
 import { UserRole } from "../enums"
 
-export interface AuthUser {
-  token: {
-    access_token: string,
-    refresh_token: string
-  },
-  user: {
-    id: string,
+
+export interface User {
+   id: string,
     firstName: string,
     lastName: string,
     email: string,
@@ -14,7 +10,13 @@ export interface AuthUser {
     role: UserRole,
     image: string,
     phone: string
-  }
+}
+export interface AuthUser {
+  token: {
+    access_token: string,
+    refresh_token: string
+  },
+  user: User
 
 }
 

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/lib/store/cart";
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
-import { toast } from "sonner";
 
 export default function GetProductDetails() {
     const { id } = useParams<{ id: string }>();
@@ -69,7 +68,3 @@ export default function GetProductDetails() {
         // </section>
     )
 }
-
-// export default GetProductDetails
-
-export const dynamic = 'force-dynamic';

@@ -1,10 +1,10 @@
 import Image from "next/image"
 import React from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import Link from "next/link"
 import { CategoryDropdown } from "./CategoryDropdown"
 import { Search } from "./Search"
 import { Cart } from "./Cart"
+import { ProfileDropdown } from "./ProfileDropdown"
 
 
 export const Header = () => {
@@ -23,10 +23,7 @@ export const Header = () => {
                 {/* cart and profile */}
                 {/* <h1>cart and profile</h1> */}
                 <div className="flex gap-4">
-                    <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                <ProfileDropdown />
                     <Cart />
                 </div>
             </div>

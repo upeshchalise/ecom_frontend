@@ -7,7 +7,7 @@ export interface UserSignup {
     password: string;
     phone: string;
     address: string;
-    image: string;
+    image?: string;
 }
 
 export interface UserSignin {

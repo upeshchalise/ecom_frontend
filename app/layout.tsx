@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/common/Header";
-import { Footer } from "@/components/common/Footer";
 import { ReactQueryClientProvider } from "@/components/react-query-client-provider";
 
 
@@ -35,15 +33,9 @@ export default function RootLayout({
             fontFamily: `'Georgia', serif`,
           }}
         >
-          <Header />          
           {children}
-          <Footer />
         </body>
       </html>
     </ReactQueryClientProvider>
   );
 }
-
-
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;

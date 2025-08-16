@@ -21,9 +21,8 @@ export const Search = () => {
       
       params.set("page", "1"); 
       params.set("pagesize", "20")
-      if (search) {
-        router.push(`?${params.toString()}`);
-      }
+      router.push(`?${params.toString()}`);
+      
       if(search.trim() === "") {
         params.delete("search")
       }

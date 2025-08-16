@@ -53,6 +53,7 @@ if (!isLoggedIn) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${useUserStore.getState().user.token.access_token}`,
         },
         body: JSON.stringify({
           paymentMethod: "esewa",

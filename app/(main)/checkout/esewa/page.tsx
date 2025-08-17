@@ -15,6 +15,7 @@ import { useUserStore } from "@/lib/store/user";
 import { generateUniqueId } from "@/utils/generate-unique-id";
 import { useRouter } from "next/navigation";
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
+import { useEffect } from "react";
 
 
 interface EsewaPayload {
@@ -41,9 +42,16 @@ export default function Esewa() {
   const router = useRouter();
 const isLoggedIn = useIsAuthenticated();
 
-if (!isLoggedIn) {
-  router.push("/signin");
-}
+useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/signin");
+    }
+  }, [isLoggedIn, router]);
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
   const handlePayment = async () => {
     try {
         

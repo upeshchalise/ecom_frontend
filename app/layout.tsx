@@ -35,7 +35,7 @@ export default function RootLayout({
           }}
         >
           {children}
-          <Toaster position="top-right" richColors/>
+          <Toaster position="top-right" richColors duration={2000} visibleToasts={3}/>
         </body>
       </html>
     </ReactQueryClientProvider>

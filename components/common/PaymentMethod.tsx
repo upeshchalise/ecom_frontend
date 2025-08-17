@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Cart, CartItem } from "@/lib/types/cart";
+import { CartItem } from "@/lib/types/cart";
 import { useCheckoutStore } from "@/lib/store/checkout";
 
 

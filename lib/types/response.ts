@@ -26,6 +26,10 @@ export interface PaginationRequest {
   search: string
 }
 
+export interface ProductPaginationRequest extends PaginationRequest {
+  categories: string[]
+}
+
 export interface PaginationMeta {
   limit: number,
   total_records: number,

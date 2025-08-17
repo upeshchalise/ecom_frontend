@@ -1,97 +1,106 @@
 "use client"
-import React from "react"
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "../ui/navigation-menu"
-import { cn } from "@/lib/utils"
-import { useQuery } from "@tanstack/react-query";
-import { getAllCategories } from "@/lib/api/api";
 
-// const components: { title: string; href: string; description: string }[] = [
-//     {
-//         title: "Alert Dialog",
-//         href: "/docs/primitives/alert-dialog",
-//         description:
-//             "A modal dialog that interrupts the user with important content and expects a response.",
-//     },
-//     {
-//         title: "Hover Card",
-//         href: "/docs/primitives/hover-card",
-//         description:
-//             "For sighted users to preview content available behind a link.",
-//     },
-//     {
-//         title: "Progress",
-//         href: "/docs/primitives/progress",
-//         description:
-//             "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-//     },
-//     {
-//         title: "Scroll-area",
-//         href: "/docs/primitives/scroll-area",
-//         description: "Visually or semantically separates content.",
-//     },
-//     {
-//         title: "Tabs",
-//         href: "/docs/primitives/tabs",
-//         description:
-//             "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-//     },
-//     {
-//         title: "Tooltip",
-//         href: "/docs/primitives/tooltip",
-//         description:
-//             "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-//     },
-// ]
-
+import React, { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { getAllCategories } from "@/lib/api/api"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
+import { Check } from "lucide-react"
+import { useSearchParams, useRouter } from "next/navigation"
 
 export const CategoryDropdown = () => {
-          const {data} = useQuery({
-        queryKey: ["categories"],
-        queryFn: () => getAllCategories()
-    })
+  const [categories, setCategories] = useState<string[]>([])
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-    return (
-        <NavigationMenu className="z-50">
-                    <NavigationMenuList>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                    {data?.data?.map((component) => (
-                                        <ListItem
-                                            key={component.id}
-                                            title={component.name}
-                                            // href={component.id}
-                                        />
-                                    ))}
-                                </ul>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                    </NavigationMenuList>
-                </NavigationMenu>
-    )
+  useEffect(() => {
+    const paramValue = searchParams.get("categories")
+    setCategories(paramValue?.split(",").filter(Boolean) || [])
+  }, [searchParams])
+
+  const { data } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getAllCategories(),
+  })
+
+  const updateURLParams = (updatedCategories: string[]) => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
+    if (updatedCategories.length > 0) {
+      params.set("categories", updatedCategories.join(","))
+    } else {
+      params.delete("categories")
+    }
+
+    router.push(`?${params.toString()}`)
+  }
+
+  const toggleCategory = (category: string) => {
+    const updated = categories.includes(category)
+      ? categories.filter((c) => c !== category)
+      : [...categories, category]
+
+    setCategories(updated)
+    updateURLParams(updated)
+  }
+
+  const clearAll = () => {
+    setCategories([])
+    updateURLParams([])
+  }
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">
+          {categories.length > 0
+            ? `Selected (${categories.length})`
+            : "Select Categories"}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80 p-2">
+        {/* Header with Clear All */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-muted-foreground">
+            Categories
+          </span>
+          {categories.length > 0 && (
+            <button
+              onClick={clearAll}
+              className="text-xs text-blue-600 hover:underline"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+
+        {/* Scrollable Category List */}
+        <div className="max-h-60 overflow-y-auto pr-1 space-y-1">
+          {data?.data?.map((category: { id: string; name: string }) => {
+            const isSelected = categories.includes(category.name)
+            return (
+              <div
+                key={category.id}
+                className="flex items-center justify-between hover:bg-accent px-2 py-1.5 rounded-md cursor-pointer"
+                onClick={() => toggleCategory(category.name)}
+              >
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={isSelected}
+                    onCheckedChange={() => toggleCategory(category.name)}
+                  />
+                  <span className="text-sm">{category.name}</span>
+                </div>
+                {isSelected && <Check className="h-4 w-4 text-green-600" />}
+              </div>
+            )
+          })}
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
 }
-
-
-const ListItem = React.forwardRef<
-    React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a">
->(({ className, title, ...props }, ref) => {
-    return (
-        <li>
-            <NavigationMenuLink asChild>
-                <a
-                    ref={ref}
-                    className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                        className
-                    )}
-                    {...props}
-                >
-                    <div className="text-sm font-medium leading-none">{title}</div>
-                </a>
-            </NavigationMenuLink>
-        </li>
-    )
-})
-ListItem.displayName = "ListItem"

@@ -12,18 +12,10 @@ export default function RootLayout({
 }>) {
   return (
     <ReactQueryClientProvider>
-      <html lang="en">
-        <body
-          className={`antialiased bg-[#f4efe6] text-[#4b3e2a] flex flex-col min-h-screen`}
-          style={{
-            fontFamily: `'Georgia', serif`,
-          }}
-        >
+      
           <Header />          
           {children}
           <Footer />
-        </body>
-      </html>
     </ReactQueryClientProvider>
   );
 }

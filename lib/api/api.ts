@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { UserSignin, UserSignup } from "../types/user";
-import { AuthUser, Category, PaginationMeta, PaginationRequest, Product, User } from "../types/response";
+import { AuthUser, Category, PaginationMeta, Product, ProductPaginationRequest, User } from "../types/response";
 import { AxiosResponse } from "axios";
 
 
@@ -13,8 +13,10 @@ export const signin = async (data: UserSignin): Promise<AuthUser> => {
     return response.data;
 }
 
-export const getAllProducts = async ({paginationData}:{paginationData: PaginationRequest}): Promise<AxiosResponse<{data: Product[], meta: PaginationMeta}>> => {
-    const response = await axiosInstance.get("/products", {params: paginationData});
+export const getAllProducts = async ({paginationData}:{paginationData: ProductPaginationRequest}): Promise<AxiosResponse<{data: Product[], meta: PaginationMeta}>> => {
+      const { categories, ...rest } = paginationData
+
+    const response = await axiosInstance.get("/products", {params: {...rest, categories: categories.join(",")}});
     return response
 }
 

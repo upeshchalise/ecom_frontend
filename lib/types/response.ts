@@ -64,3 +64,11 @@ export interface Product {
     image: string | null
   }
 }
+
+  export interface JwtPayload {
+  user_id: string;         
+  role: UserRole; 
+  scope: string[];        
+  iat: number;             
+  exp: number;            
+}

@@ -12,7 +12,9 @@ import { SignupSchema } from "@/lib/schema/user";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { signup } from "@/lib/api/api";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
+import { Messages } from "@/lib/messages";
+import { AxiosError } from "axios";
 
 
 const Signup = () => {
@@ -41,8 +43,9 @@ const Signup = () => {
             toast.success("User created successfully");
             router.push("/signin");
         },
-        onError: (error) => {
-            toast.error("Error creating user");
+        onError: (error: AxiosError) => {
+            console.log("error ===>>", error)
+            toast.error(Messages[error.response?.data as string]);
             console.error("Error creating user:", error);
         }
     })
@@ -86,7 +89,7 @@ const Signup = () => {
                                 borderRadius: "50%",
                             }} /> : <Upload className="mx-auto text-gray-500" />}
                         </div>
-                        <Input type="file" name="image" onChange={handleChange} accept="image/*"/>
+                        <Input type="file" name="image" onChange={handleChange} accept="image/*" />
                     </div>
                     <Input type="text" placeholder="First Name" className={`bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d] ${errors.first_name && "border border-red-500"}`} {...register("first_name")} />
                     {errors.first_name && <span className="text-red-500">{errors.first_name.message}</span>}

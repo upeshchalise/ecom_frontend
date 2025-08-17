@@ -1,8 +1,6 @@
 import "../globals.css";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
-import { ReactQueryClientProvider } from "@/components/react-query-client-provider";
-
 
 
 export default function RootLayout({
@@ -11,11 +9,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryClientProvider>
-      
+    // <ReactQueryClientProvider>
+      <>
           <Header />          
           {children}
           <Footer />
-    </ReactQueryClientProvider>
+      </>
+    // </ReactQueryClientProvider>
   );
 }

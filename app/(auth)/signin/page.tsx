@@ -2,11 +2,13 @@
 import { Input } from "@/components/ui/input";
 import { signin } from "@/lib/api/api";
 import { UserRole } from "@/lib/enums";
+import { Messages } from "@/lib/messages";
 import { SigninSchema } from "@/lib/schema/user";
 import { useUserStore } from "@/lib/store/user";
 import { AuthenticatedUser } from "@/lib/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -54,8 +56,8 @@ const Signin = () => {
                 router.push("/");
             }
         },
-        onError: (error) => {
-            toast.error("Error logging in user");
+        onError: (error: AxiosError) => {
+            toast.error(Messages[error.response?.data as string]);
             console.error("Error logging in user:", error);
         }
     })
@@ -72,7 +74,7 @@ const Signin = () => {
                     <Input type="email" placeholder="Email" className="bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d]" {...register("email")} />
                     {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                     <Input type="password" placeholder="Password" className="bg-[#fdfaf5] w-full p-2 rounded-md border border-[#b8a98d]" {...register("password")} />
-                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+                    {errors.password && <span className="text-red-500">{errors.password.message}</span>}
 
                     <button className="w-full p-2.5 bg-[#8b6e4b] text-white border-none rounded-xl font-bold cursor-pointer hover:bg-[#6e5435]">Login</button>
 

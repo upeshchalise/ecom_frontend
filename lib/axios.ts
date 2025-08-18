@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
         "Accept": "application/json",
         "Authorization": `Bearer ${useUserStore.getState().user?.token?.access_token}`
     },
+    withCredentials: true
 })
 
 export default axiosInstance;

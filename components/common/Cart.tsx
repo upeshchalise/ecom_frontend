@@ -17,6 +17,7 @@ import { PaymentMethod } from "./PaymentMethod"
 import { useEffect, useState } from "react"
 import { useUserStore } from "@/lib/store/user"
 import Link from "next/link"
+import { UserRole } from "@/lib/enums"
 
 export const Cart = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -68,6 +69,10 @@ export const Cart = () => {
                 </tr>
             </tfoot>
         </table>
+
+            if(user.role === UserRole.ADMIN) {
+                return null
+            }
 
     return (
         <Dialog open={isCartOpen} onOpenChange={setIsCartOpen}>

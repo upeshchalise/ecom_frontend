@@ -1,7 +1,18 @@
-// import { UserRole } from "@/lib/enums";
-// import AuthWrapper from "@/lib/providers/authWrapper";
+import "../../globals.css";
+import { Header } from "@/components/common/Header";
+import { Footer } from "@/components/common/Footer";
 
-// export default function AdminLayout({ children }: { children: React.ReactNode }) {
 
-//     return <AuthWrapper role={UserRole.ADMIN}>{children}</AuthWrapper>;
-// }
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+      <>
+          <Header />          
+          {children}
+          <Footer />
+      </>
+  );
+}

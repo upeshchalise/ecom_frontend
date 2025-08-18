@@ -14,13 +14,15 @@ function decodeJwt(token: string): JwtPayload | null {
 export function middleware(req: NextRequest) {
     const token = req.cookies.get('thrift')?.value;
 
+    console.log("token in middleware ==>", token)
     if (!token) {
         return NextResponse.redirect(new URL('/signin', req.url));
     }
 
     const payload = decodeJwt(token)
 
-    if(!payload || payload.role !== UserRole.ADMIN || payload.exp < Date.now() / 1000) {
+    console.log("payload",payload)
+    if(!payload || payload.role !== UserRole.ADMIN|| payload.exp < Date.now() / 1000) {
         return NextResponse.redirect(new URL('/signin', req.url));
     }
 }

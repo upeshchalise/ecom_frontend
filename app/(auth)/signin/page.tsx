@@ -32,6 +32,7 @@ const Signin = () => {
     const signinMutation = useMutation({
         mutationFn: signin,
         onSuccess: (data: AuthenticatedUser) => {
+            console.log("dataaa==>", data)
             toast.success("User logged in successfully");
             setUser({
                 token: {

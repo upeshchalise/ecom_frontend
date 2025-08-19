@@ -1,5 +1,6 @@
 'use client';
 
+import AddCategoryModal from "@/components/common/AddCategoryModal";
 import AdminCard from "@/components/common/AdminCards";
 import { useRouter } from "next/navigation";
 
@@ -14,9 +15,7 @@ const AdminDashboard = () => {
                     <h1 className="text-3xl font-bold text-[#5b3e1d]">Admin Dashboard</h1>
                     <p className="text-[#7a6244] mt-1">See users, product, analytics and category management.</p>
                 </div>
-                <button className="bg-[#7a6244] text-white px-4 py-2 rounded hover:bg-[#5b3e1d] transition">
-                    + Add Category
-                </button>
+                <AddCategoryModal />
             </div>
 
             {/* Admin Control Cards */}

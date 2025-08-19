@@ -72,3 +72,7 @@ export interface Product {
   iat: number;             
   exp: number;            
 }
+
+export interface CategoryRequest {
+  name: string
+}

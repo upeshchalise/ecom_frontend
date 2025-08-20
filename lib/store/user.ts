@@ -26,7 +26,6 @@ export const defaultUserState : AuthenticatedUser = {
     }
 }
 
-// can also add get in persist to get items
 export const useUserStore = create<UserStore>()(persist((set) => ({
     user: defaultUserState,
     setUser: (user: AuthenticatedUser) => set({user}),

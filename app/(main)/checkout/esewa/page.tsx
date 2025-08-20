@@ -78,7 +78,6 @@ useEffect(() => {
         throw new Error("Invalid eSewa response");
       }
 
-      // Create and auto-submit form to eSewa
       const form = document.createElement("form");
       form.method = "POST";
       form.action = data.esewaUrl;

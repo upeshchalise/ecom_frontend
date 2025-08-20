@@ -5,7 +5,8 @@ import AddCategoryModal from "@/components/common/AddCategoryModal";
 import CategoryCard from "@/components/common/CategoryCard";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getAllCategories } from "@/lib/api/api";
+import { getAllCategories, getAllCategoriesForAdmin } from "@/lib/api/api";
+import { CategoryWithProductCount } from "@/lib/types/response";
 
 type Category = {
   id: string;
@@ -18,7 +19,7 @@ const AdminCategories = () => {
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ["categories"],
-    queryFn: getAllCategories,
+    queryFn: getAllCategoriesForAdmin,
   });
   console.log("categories", categories)
 
@@ -38,8 +39,8 @@ const AdminCategories = () => {
             <Skeleton key={i} className="h-24 rounded-xl bg-[#f5ede0]" />
           ))
         ) : (
-          categories?.data.map((category: Category) => (
-            <CategoryCard key={category.id} name={category.name} productCount={10} onClick={(()=> router.push(`/admin/categories/${category.id}`))}/>
+          categories?.data.map((category: CategoryWithProductCount) => (
+            <CategoryCard key={category?.id} name={category?.name} productCount={category._count.products} onClick={(()=> router.push(`/admin/categories/${category.id}`))}/>
           ))
         )}
       </div>

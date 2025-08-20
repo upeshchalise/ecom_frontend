@@ -54,8 +54,8 @@ export interface Product {
   price: number;
   image: string | null;
   userId: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string; 
   deletedAt: string | null;
   categories: Category[];
   user?: {
@@ -75,4 +75,8 @@ export interface Product {
 
 export interface CategoryRequest {
   name: string
+}
+
+export interface CategoryWithProductCount extends Category{
+  _count: {products: number};
 }

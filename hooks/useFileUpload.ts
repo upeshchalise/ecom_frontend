@@ -1,11 +1,9 @@
 import axiosInstance from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// API call to upload the file
 
 interface UploadResponse {
   url: string;
-  // Add other response properties if needed
 }
 const uploadFile = async (file: File): Promise<any> => {
     const formData = new FormData();
@@ -24,7 +22,6 @@ const uploadFile = async (file: File): Promise<any> => {
     return response.data;
 };
 
-// Custom hook
 const useFileUpload = () => {
     const queryClient = useQueryClient();
 

@@ -9,12 +9,14 @@ import { ProfileSchema } from "@/lib/schema/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFileUpload from "@/hooks/useFileUpload";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "@/lib/api/api";
 
 const ProfilePage = () => {
   const [url, setUrl] = useState<string>("");
-  const [imageChanged, setImageChanged] = useState(false); // 👈 NEW
+  const [imageChanged, setImageChanged] = useState(false);
 
   const { mutate } = useFileUpload();
 
@@ -27,14 +29,36 @@ const ProfilePage = () => {
   } = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {
-      first_name: "Upesh",
-      last_name: "Chalise",
-      email: "upesh@example.com",
-      phone: "9800000000",
-      address: "Kathmandu, Nepal",
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      address: "",
       image: "",
     },
   });
+
+  const { data: userProfile } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: getUserProfile,
+  });
+
+  useEffect(() => {
+    if (userProfile?.data) {
+      reset({
+        first_name: userProfile.data.firstName || "",
+        last_name: userProfile.data.lastName || "",
+        email: userProfile.data.email || "",
+        phone: userProfile.data.phone || "",
+        address: userProfile.data.address || "",
+        image: userProfile.data.image || "",
+      });
+      
+      if (userProfile.data.image) {
+        setUrl(userProfile.data.image);
+      }
+    }
+  }, [userProfile, reset]);
 
   const onSubmit = (data: z.infer<typeof ProfileSchema>) => {
     toast.success("Profile updated");

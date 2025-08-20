@@ -7,10 +7,13 @@ import { Search } from "./Search"
 import { Cart } from "./Cart"
 import { ProfileDropdown } from "./ProfileDropdown"
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated"
+import { useRouter } from "next/navigation"
+import { Button } from "../ui/button"
 
 
 export const Header = () => {
     const isAuthenticated = useIsAuthenticated();
+    const router = useRouter();
     return (
         <div className="flex justify-between items-center py-4 px-2">
             <Link href="/">
@@ -27,8 +30,9 @@ export const Header = () => {
                 {/* <h1>cart and profile</h1> */}
                 <div className="flex gap-4">
                     {
-                        isAuthenticated &&
-                        <ProfileDropdown />
+                        isAuthenticated ?
+                        <ProfileDropdown /> :
+                        <Button onClick={()=> router.push("/signin")} className=" bg-[#8b6e4b] hover:bg-[#6e5435] cursor-pointer">Login</Button>
                     }
                     <Cart />
                 </div>

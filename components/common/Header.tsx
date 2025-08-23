@@ -9,14 +9,17 @@ import { ProfileDropdown } from "./ProfileDropdown"
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated"
 import { useRouter } from "next/navigation"
 import { Button } from "../ui/button"
+import { useUserStore } from "@/lib/store/user"
+import { UserRole } from "@/lib/enums"
 
 
 export const Header = () => {
     const isAuthenticated = useIsAuthenticated();
+    const user = useUserStore((state) => state.user.user);
     const router = useRouter();
     return (
         <div className="flex justify-between items-center py-4 px-2">
-            <Link href="/">
+            <Link href={user.role === UserRole.ADMIN ? "/admin/dashboard" : "/"}>
                 <Image height={100} width={100} src={"/thrift-logo.svg"} alt={"Thrift Store"} style={{ objectFit: "fill" }} className="rounded-full h-full" />
             </Link>
             <div className="flex gap-4 items-center">

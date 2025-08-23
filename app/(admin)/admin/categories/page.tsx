@@ -21,7 +21,6 @@ const AdminCategories = () => {
     queryKey: ["categories"],
     queryFn: getAllCategoriesForAdmin,
   });
-  console.log("categories", categories)
 
   return (
     <section className="p-6">

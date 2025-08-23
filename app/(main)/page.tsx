@@ -45,7 +45,6 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams();
-    console.log("params", params.get('categories'));
     params.set('page', String(page));
     params.set('search', search);
     params.set('pagesize', String(pageSize));

@@ -62,7 +62,6 @@ const ProfilePage = () => {
 
   const onSubmit = (data: z.infer<typeof ProfileSchema>) => {
     toast.success("Profile updated");
-    console.log("Updated profile", data);
     reset(data);
     setImageChanged(false);
   };

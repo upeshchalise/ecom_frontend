@@ -18,7 +18,6 @@ interface Props {
 
 
 export const PaymentMethod = ({ cart, setIsCartOpen }: Props) => {
-    console.log("PaymentMethod component rendered", setIsCartOpen);
     const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState("khalti");
 

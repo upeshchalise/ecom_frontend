@@ -44,7 +44,6 @@ const Signup = () => {
             router.push("/signin");
         },
         onError: (error: AxiosError) => {
-            console.log("error ===>>", error)
             toast.error(Messages[error.response?.data as string]);
             console.error("Error creating user:", error);
         }
@@ -59,7 +58,6 @@ const Signup = () => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             if (file) {
-                console.log(e.target.files, "e.target.files", file);
                 mutate(file, {
                     onSuccess: (data) => {
                         setUrl(data?.url);

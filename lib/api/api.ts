@@ -54,3 +54,8 @@ export const getUserProfile = async () : Promise<AxiosResponse<User>> => {
     const response = await axiosInstance.get(`/user/profile`);
     return response;
 }
+
+export const adminGetAllUsers = async ({ paginationData }: { paginationData: PaginationRequest }) : Promise<AxiosResponse<{data: User[], meta: PaginationMeta}>> => {
+    const response = await axiosInstance.get("/admin/users", { params: paginationData });
+    return response;
+}

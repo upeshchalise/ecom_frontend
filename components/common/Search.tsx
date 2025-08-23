@@ -17,19 +17,23 @@ export const Search = () => {
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
     
+       if(search.trim() === "") {
+        params.delete("search")
+      } else {
         params.set("search", search);
-      
-      params.set("page", "1"); 
-      params.set("pagesize", "20")
+      }
+
+      params.set("page", "1");
+      params.set("pagesize", "20");
       router.push(`?${params.toString()}`);
       
-      if(search.trim() === "") {
-        params.delete("search")
-      }
+     
     }, 500);
 
     return () => clearTimeout(handler);
   }, [search]);
+
+  
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

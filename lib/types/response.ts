@@ -80,3 +80,9 @@ export interface CategoryRequest {
 export interface CategoryWithProductCount extends Category{
   _count: {products: number};
 }
+
+export interface SalesAnalytics {
+    total_sales: number;
+    users: number;
+    count: number
+}

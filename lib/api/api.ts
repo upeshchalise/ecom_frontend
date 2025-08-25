@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { UserSignin, UserSignup } from "../types/user";
-import { AuthUser, Category, CategoryRequest, CategoryWithProductCount, PaginationMeta, PaginationRequest, Product, ProductPaginationRequest, User } from "../types/response";
+import { AuthUser, Category, CategoryRequest, CategoryWithProductCount, PaginationMeta, PaginationRequest, Product, ProductPaginationRequest, SalesAnalytics, User } from "../types/response";
 import { AxiosResponse } from "axios";
 
 
@@ -57,5 +57,10 @@ export const getUserProfile = async () : Promise<AxiosResponse<User>> => {
 
 export const adminGetAllUsers = async ({ paginationData }: { paginationData: PaginationRequest }) : Promise<AxiosResponse<{data: User[], meta: PaginationMeta}>> => {
     const response = await axiosInstance.get("/admin/users", { params: paginationData });
+    return response;
+}
+
+export const salesAnalytics = async(time?: string): Promise<AxiosResponse<SalesAnalytics>> => {
+    const response = await axiosInstance.get("/admin/sales/analytics", { params: { time } });
     return response;
 }

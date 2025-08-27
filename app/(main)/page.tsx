@@ -2,10 +2,11 @@
 import { CreateProductModal } from "@/components/common/CreateProduct";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getAllProducts } from "@/lib/api/api";
+import { getAllProducts, updateUserInteractions } from "@/lib/api/api";
 import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
-import { useQuery } from "@tanstack/react-query";
+import { InteractionData } from "@/lib/types/user";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -43,6 +44,21 @@ export default function Home() {
     queryFn: () => getAllProducts({ paginationData: { page, pageSize, search, categories } }),
   })
 
+  const {mutate} = useMutation({
+        mutationFn: (interactionData: InteractionData) => updateUserInteractions(interactionData),
+        mutationKey: ['update-interactions'],
+    })
+
+    function handleMutation(id: string) {
+        const interactionData: InteractionData = {
+            interactionType: "VIEW",
+            productIds: [id]
+        }
+        if (isLoggedIn) {
+            mutate(interactionData);
+        }
+    }
+
   useEffect(() => {
     const params = new URLSearchParams();
     params.set('page', String(page));
@@ -78,7 +94,7 @@ export default function Home() {
       <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
         {isLoading && <p>Loading...</p>}
         {data?.data?.data?.map((product: Product) => (
-          <Link href={`/product/${product.id}`} key={product.id}>
+          <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
             <ProductCard data={product} />
           </Link>
         ))}

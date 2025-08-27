@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { UserSignin, UserSignup } from "../types/user";
+import { InteractionData, UserSignin, UserSignup } from "../types/user";
 import { AuthUser, Category, CategoryRequest, CategoryWithProductCount, PaginationMeta, PaginationRequest, Product, ProductPaginationRequest, SalesAnalytics, User } from "../types/response";
 import { AxiosResponse } from "axios";
 
@@ -63,4 +63,8 @@ export const adminGetAllUsers = async ({ paginationData }: { paginationData: Pag
 export const salesAnalytics = async(time?: string): Promise<AxiosResponse<SalesAnalytics>> => {
     const response = await axiosInstance.get("/admin/sales/analytics", { params: { time } });
     return response;
+}
+
+export const updateUserInteractions = (interactionsData: InteractionData): Promise<void> => {
+    return axiosInstance.post("/user/interaction", interactionsData);
 }

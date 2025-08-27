@@ -33,3 +33,8 @@ export interface AuthenticatedUser {
     },
     user: User
 }
+
+export interface InteractionData {
+    productIds: string[],
+    interactionType: "VIEW" | "CART" | "PURCHASE"
+}

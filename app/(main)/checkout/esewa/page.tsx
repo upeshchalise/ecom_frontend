@@ -16,6 +16,7 @@ import { generateUniqueId } from "@/utils/generate-unique-id";
 import { useRouter } from "next/navigation";
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 
 interface EsewaPayload {
@@ -74,6 +75,12 @@ useEffect(() => {
 
       const data = await response.json();
 
+      if (!response.ok) {
+        toast.error(data.message);
+        console.error("Payment initiation failed:", data.message);
+        throw new Error(data.message);
+      }
+
       if (!data?.esewaUrl || !data?.payload) {
         throw new Error("Invalid eSewa response");
       }
@@ -94,7 +101,7 @@ useEffect(() => {
       form.submit();
     } catch (error) {
       console.error("Payment failed:", error);
-      alert("Something went wrong during payment.");
+      // alert("Something went wrong during payment.");
     }
   };
 

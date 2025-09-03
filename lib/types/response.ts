@@ -60,6 +60,7 @@ export interface Product {
   deletedAt: string | null;
   categories: Category[];
   user?: {
+    id: string;
     firstName: string;
     lastName: string;
     image: string | null

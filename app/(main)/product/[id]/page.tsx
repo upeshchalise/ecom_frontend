@@ -7,6 +7,8 @@ import { useCartStore } from "@/lib/store/cart";
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
 import { toast } from "sonner";
 import { InteractionData } from "@/lib/types/user";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function GetProductDetails() {
     const { id } = useParams<{ id: string }>();
@@ -78,9 +80,14 @@ export default function GetProductDetails() {
             <h1 className="text-3xl font-bold">{data?.data?.name}</h1>
             <p className="text-lg">{data?.data?.description}</p>
             <p className="text-xl font-bold">Rs. {data?.data?.price}</p>
-            <button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435]" onClick={handleAddToCart}>
+            <div className="flex justify-between">
+            <Button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435] h-16" onClick={handleAddToCart} disabled={data?.data?.quantity < 1} >
                 Add to Cart
-            </button>
+            </Button>
+            <span className={cn(`bg-green-300 text-green-900 h-fit py-3 px-2 rounded-sm text-lg font-medium`, {"bg-red-300 text-red-900": data?.data?.quantity < 1})} >
+                {data?.data?.quantity < 1 ? "Out of Stock" : `${data?.data?.quantity} in stock`}
+            </span>
+            </div>
         </div>
         // </section>
     )

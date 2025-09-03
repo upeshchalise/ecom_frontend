@@ -23,6 +23,7 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
     description: "",
     price: "",
     image: "",
+    quantity: "",
     category_ids: [] as string[],
   });
 
@@ -87,7 +88,10 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
         body: JSON.stringify(form),
       });
 
-      if (!res.ok) throw new Error("Failed to create product");
+      if (!res.ok) {
+        toast.error("Failed to create product");
+        throw new Error("Failed to create product");
+      }
       toast.success("Product created!");
       onClose();
     } catch (err) {
@@ -126,21 +130,30 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
             required
             className="p-3 rounded border border-[#e5d9c6] bg-[#fefaf5]"
           />
-         <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="p-3 rounded border border-[#e5d9c6] bg-[#fefaf5]"
+           <input
+            name="quantity"
+            type="number"
+            placeholder="Quantity"
+            value={form.quantity}
+            onChange={handleChange}
+            required
+            className="p-3 rounded border border-[#e5d9c6] bg-[#fefaf5]"
+          />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="p-3 rounded border border-[#e5d9c6] bg-[#fefaf5]"
+            />
+            {form.image && (
+              <img
+                src={form.image}
+                alt="Preview"
+                className="mt-2 h-24 object-contain rounded border border-[#e5d9c6]"
               />
-              {form.image && (
-                <img
-                  src={form.image}
-                  alt="Preview"
-                  className="mt-2 h-24 object-contain rounded border border-[#e5d9c6]"
-                />
-              )}
-            </div>
+            )}
+          </div>
 
 
           {/* Category dropdown */}
@@ -160,10 +173,9 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
           <button
             type="submit"
             disabled={isUploading || !form.image}
-className={`py-3 rounded transition ${
-                isUploading || !form.image
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#8b6f47] hover:bg-[#6b4c2e] text-white"
+            className={`py-3 rounded transition ${isUploading || !form.image
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[#8b6f47] hover:bg-[#6b4c2e] text-white"
               }`}
           >
             Create Product

@@ -81,12 +81,14 @@ export default function Home() {
         <Image fill src={"/banner.png"} alt={"thrift store banner"} style={{ objectFit: "cover" }} className="rounded-md" />
       </div>
       {isLoggedIn && (
-        <Button
-          onClick={() => setOpenModal(true)}
-          className="bg-[#8b6f47] hover:bg-[#6b4c2e] text-white rounded px-6 py-2 mb-4"
-        >
-          + Add Product
-        </Button>
+        <div className="w-full md:w-[98%] mx-auto flex justify-end pt-2">
+                    <Button
+                        onClick={() => setOpenModal(true)}
+                        className="bg-[#8b6f47] hover:bg-[#6b4c2e] text-white rounded px-6 py-2 mb-4 items-end"
+                    >
+                        + Add Product
+                    </Button>
+                </div>
       )}
       <CreateProductModal  mode='create' open={openModal} onClose={() => setOpenModal(false)} />
 

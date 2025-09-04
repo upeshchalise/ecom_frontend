@@ -1,5 +1,5 @@
 "use client"
-import { LogOut, User } from "lucide-react"
+import { Database, LogOut, User } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { useRouter } from "next/navigation";
@@ -30,6 +30,13 @@ export const ProfileDropdown = () => {
                 >
                     <User className="w-4 h-4 mr-2" />
                     Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => router.push("/my-products")}
+                    className="cursor-pointer"
+                >
+                    <Database className="w-4 h-4 mr-2" />
+                    My Products
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={handleLogout}

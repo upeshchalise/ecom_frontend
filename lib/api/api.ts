@@ -76,3 +76,8 @@ export const deleteProductById = async(productId: string): Promise<void> => {
 export const updateProductById = async(productId: string, productData: FormData): Promise<AxiosResponse<Product>> => {
     return axiosInstance.put(`/product/update/${productId}`, productData);
 }
+
+export const getProductByUserId = async( { paginationData }: { paginationData: ProductPaginationRequest }) : Promise<AxiosResponse<{data: Product[], meta: PaginationMeta}>> => {
+    const response = await axiosInstance.get(`/products/user/my-products`, { params: paginationData });
+    return response;
+}

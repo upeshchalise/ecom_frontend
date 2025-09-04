@@ -6,7 +6,6 @@ import { useUserStore } from "@/lib/store/user";
 import { toast } from "sonner";
 import axios from "axios";
 import useFileUpload from "@/hooks/useFileUpload";
-import { MultiSelectCategories } from "./MultiSelectCategories";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {

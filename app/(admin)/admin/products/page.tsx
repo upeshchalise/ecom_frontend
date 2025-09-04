@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const AdminProductList = () => {
-      const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(20);
   const [categories, setCategories] = useState<string[]>([]);
@@ -48,14 +48,14 @@ const AdminProductList = () => {
   }, [page, search, pageSize, categories])
 
 
-    return (
- <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-        {isLoading && <p>Loading...</p>}
-        {data?.data?.data?.map((product: Product) => (
-          <Link href={`/product/${product.id}`} key={product.id}>
-            <ProductCard data={product} />
-          </Link>
-        ))}
-      </div>    )
+  return (
+    <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+      {isLoading && <p>Loading...</p>}
+      {data?.data?.data?.map((product: Product) => (
+        <Link href={`/admin/products/${product.id}`} key={product.id}>
+          <ProductCard data={product} />
+        </Link>
+      ))}
+    </div>)
 }
 export default AdminProductList

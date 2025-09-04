@@ -6,10 +6,24 @@ import { useUserStore } from "@/lib/store/user";
 import { toast } from "sonner";
 import axios from "axios";
 import useFileUpload from "@/hooks/useFileUpload";
+import { MultiSelectCategories } from "./MultiSelectCategories";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  mode: "create" | "update";
+  initialData?: Partial<ProductForm>;
+  productId?: string;
+}
+
+interface ProductForm {
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+  quantity: string;
+  category_ids: string[];
 }
 
 interface Category {
@@ -17,18 +31,34 @@ interface Category {
   name: string;
 }
 
-export const CreateProductModal = ({ open, onClose }: Props) => {
-  const [form, setForm] = useState({
+export const CreateProductModal = ({ open, onClose, mode, initialData, productId }: Props) => {
+  const [form, setForm] = useState<ProductForm>({
     name: "",
     description: "",
     price: "",
     image: "",
     quantity: "",
-    category_ids: [] as string[],
+    category_ids: [],
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const queryClient = useQueryClient();
+
   const { mutate, isPending: isUploading } = useFileUpload();
+
+
+  useEffect(() => {
+    if (mode === "update" && initialData) {
+      setForm({
+        name: initialData.name ?? "",
+        description: initialData.description ?? "",
+        price: String(initialData.price ?? ""),
+        image: initialData.image ?? "",
+        quantity: String(initialData.quantity ?? ""),
+        category_ids: initialData.category_ids ?? [],
+      });
+    }
+  }, [initialData, mode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -58,7 +88,6 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
     }
   };
 
-
   const fetchCategories = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/categories");
@@ -79,8 +108,15 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
     const token = useUserStore.getState().user.token.access_token;
 
     try {
-      const res = await fetch("http://localhost:4000/api/admin/product", {
-        method: "POST",
+      const url =
+        mode === "create"
+          ? "http://localhost:4000/api/admin/product"
+          : `http://localhost:4000/api/product/update/${productId}`;
+
+      const method = mode === "create" ? "POST" : "PUT";
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -89,10 +125,12 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
       });
 
       if (!res.ok) {
-        toast.error("Failed to create product");
-        throw new Error("Failed to create product");
+        toast.error(`Failed to ${mode === "create" ? "create" : "update"} product`);
+        throw new Error("Request failed");
       }
-      toast.success("Product created!");
+
+      toast.success(`Product ${mode === "create" ? "created" : "updated"}!`);
+      queryClient.invalidateQueries({ queryKey: ['products', productId] });
       onClose();
     } catch (err) {
       toast.error("Something went wrong.");
@@ -103,7 +141,9 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-[#faf6ef] p-6 rounded-lg shadow-md border border-[#e5d9c6] max-w-md">
-        <h2 className="text-2xl font-bold text-[#6b4c2e] mb-4 text-center">Add New Product</h2>
+        <h2 className="text-2xl font-bold text-[#6b4c2e] mb-4 text-center">
+          {mode === "create" ? "Add New Product" : "Update Product"}
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
             name="name"
@@ -130,7 +170,7 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
             required
             className="p-3 rounded border border-[#e5d9c6] bg-[#fefaf5]"
           />
-           <input
+          <input
             name="quantity"
             type="number"
             placeholder="Quantity"
@@ -155,8 +195,6 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
             )}
           </div>
 
-
-          {/* Category dropdown */}
           <select
             multiple
             value={form.category_ids}
@@ -169,16 +207,24 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
               </option>
             ))}
           </select>
+          {/* <MultiSelectCategories
+            selected={form.category_ids}
+            onChange={(newIds) =>
+              setForm((prev) => ({ ...prev, category_ids: newIds }))
+            }
+            options={categories}
+          /> */}
+
 
           <button
             type="submit"
             disabled={isUploading || !form.image}
             className={`py-3 rounded transition ${isUploading || !form.image
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[#8b6f47] hover:bg-[#6b4c2e] text-white"
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#8b6f47] hover:bg-[#6b4c2e] text-white"
               }`}
           >
-            Create Product
+            {mode === "create" ? "Create Product" : "Update Product"}
           </button>
         </form>
       </DialogContent>

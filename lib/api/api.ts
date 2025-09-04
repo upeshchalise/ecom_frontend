@@ -68,3 +68,11 @@ export const salesAnalytics = async(time?: string): Promise<AxiosResponse<SalesA
 export const updateUserInteractions = (interactionsData: InteractionData): Promise<void> => {
     return axiosInstance.post("/user/interaction", interactionsData);
 }
+
+export const deleteProductById = async(productId: string): Promise<void> => {
+    return axiosInstance.delete(`/product/delete/${productId}`);
+}
+
+export const updateProductById = async(productId: string, productData: FormData): Promise<AxiosResponse<Product>> => {
+    return axiosInstance.put(`/product/update/${productId}`, productData);
+}

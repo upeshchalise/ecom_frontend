@@ -88,7 +88,7 @@ export default function Home() {
           + Add Product
         </Button>
       )}
-      <CreateProductModal open={openModal} onClose={() => setOpenModal(false)} />
+      <CreateProductModal  mode='create' open={openModal} onClose={() => setOpenModal(false)} />
 
 
       <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">

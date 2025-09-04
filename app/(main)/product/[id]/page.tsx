@@ -1,6 +1,6 @@
 "use client";
-import { getProductById, updateUserInteractions } from "@/lib/api/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteProductById, getProductById, updateUserInteractions } from "@/lib/api/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/lib/store/cart";
@@ -10,27 +10,46 @@ import { InteractionData } from "@/lib/types/user";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/lib/store/user";
+import DeleteConfirmationModal from "@/components/common/DeleteProductModal";
+import { useState } from "react";
+import { CreateProductModal } from "@/components/common/CreateProduct";
 
 export default function GetProductDetails() {
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const { id } = useParams<{ id: string }>();
     const { id: userId } = useUserStore(store => store.user.user)
     const addItem = useCartStore((state) => state.addItem);
 
+
     const isLoggedIn = useIsAuthenticated();
     const router = useRouter();
-    
+
+    const queryClient = useQueryClient();
+
     const { data, isLoading } = useQuery({
         queryKey: ['products', id],
         queryFn: () => getProductById(id),
         enabled: !!id
-        
+
     })
-    console.log("userId", userId, "from product data",data?.data.userId)
+    console.log("userId", userId, "from product data", data?.data.userId)
 
     const { mutate } = useMutation({
         mutationFn: (interactionData: InteractionData) => updateUserInteractions(interactionData),
         mutationKey: ['update-interactions']
     })
+
+    const { mutate: deleteMutation } = useMutation({
+        mutationFn: () => deleteProductById(id),
+        onSuccess: () => {
+            toast.success("Product deleted successfully.");
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            router.push("/");
+        },
+        onError: () => {
+            toast.error("Failed to delete product.");
+        },
+    });
 
     function handleMutation() {
         const interactionData: InteractionData = {
@@ -65,12 +84,15 @@ export default function GetProductDetails() {
         handleMutation();
     }
 
-    function handleDelete() {
-        console.log("Delete product");
-    }
+
+
+    const handleDelete = () => {
+        deleteMutation();
+    };
+
 
     function handleUpdate() {
-        console.log("Update product");
+        setIsUpdateModalOpen(true);
     }
     if (!data?.data) return <p>Product not found</p>;
 
@@ -99,9 +121,15 @@ export default function GetProductDetails() {
                                 Update Product
                             </Button>
 
-                            <Button className="bg-[#b8513c] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#822c0d] h-16" onClick={handleDelete}>
-                                Delete Product
-                            </Button>
+                            <DeleteConfirmationModal
+                                onConfirm={handleDelete}
+                                trigger={
+                                    <Button className="bg-[#b8513c] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#822c0d] h-16">
+                                        Delete Product
+                                    </Button>
+                                }
+                            />
+
                         </div>
                     ) :
                         <Button className="bg-[#8b6e4b] text-white py-3 px-6 rounded-[6px] text-base cursor-pointer hover:bg-[#6e5435] h-16" onClick={handleAddToCart} disabled={data?.data?.quantity < 1} >
@@ -113,6 +141,21 @@ export default function GetProductDetails() {
                     {data?.data?.quantity < 1 ? "Out of Stock" : `${data?.data?.quantity} in stock`}
                 </span>
             </div>
+            <CreateProductModal
+                open={isUpdateModalOpen}
+                onClose={() => setIsUpdateModalOpen(false)}
+                mode="update"
+                productId={data?.data?.id}
+                initialData={{
+                    name: data?.data?.name,
+                    description: data?.data?.description,
+                    price: Number(data?.data?.price).toFixed(2),
+                    image: data?.data?.image ?? '',
+                    quantity: Number(data?.data?.quantity).toFixed(2),
+                    category_ids: data?.data?.categories?.map((c: any) => c.id) ?? [],
+                }}
+            />
+
         </div>
         // </section>
     )

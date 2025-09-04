@@ -29,7 +29,7 @@ const [timeRange, setTimeRange] = useState('7days')
                 <SelectAnalyticsTimeDropdown value={timeRange} onChange={setTimeRange} />
             </div>
             <div className="flex gap-5 mb-30">
-                <AnalyticsCard title="Total Sales (Rs.)" amount={analyticsData?.data.total_sales} />
+                <AnalyticsCard title="Total Sales (Rs.)" amount={Number((analyticsData?.data?.total_sales).toFixed(2))||0} />
                 <AnalyticsCard title="Total Orders (Rs.)" amount={analyticsData?.data.count} />
                 <AnalyticsCard title="Total Customers" amount={analyticsData?.data.users} />
                 <AnalyticsCard title="Avg Order Value (Rs.)" amount={Number((analyticsData?.data?.total_sales / analyticsData?.data?.count).toFixed(2))||0} />

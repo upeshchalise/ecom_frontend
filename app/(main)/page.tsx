@@ -44,20 +44,20 @@ export default function Home() {
     queryFn: () => getAllProducts({ paginationData: { page, pageSize, search, categories } }),
   })
 
-  const {mutate} = useMutation({
-        mutationFn: (interactionData: InteractionData) => updateUserInteractions(interactionData),
-        mutationKey: ['update-interactions'],
-    })
+  const { mutate } = useMutation({
+    mutationFn: (interactionData: InteractionData) => updateUserInteractions(interactionData),
+    mutationKey: ['update-interactions'],
+  })
 
-    function handleMutation(id: string) {
-        const interactionData: InteractionData = {
-            interactionType: "VIEW",
-            productIds: [id]
-        }
-        if (isLoggedIn) {
-            mutate(interactionData);
-        }
+  function handleMutation(id: string) {
+    const interactionData: InteractionData = {
+      interactionType: "VIEW",
+      productIds: [id]
     }
+    if (isLoggedIn) {
+      mutate(interactionData);
+    }
+  }
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -76,30 +76,53 @@ export default function Home() {
 
   return (
     <>
-
       <div className="w-full  md:w-[98%] mx-auto h-[400px] relative rounded-md overflow-y-auto">
         <Image fill src={"/banner.png"} alt={"thrift store banner"} style={{ objectFit: "cover" }} className="rounded-md" />
       </div>
       {isLoggedIn && (
         <div className="w-full md:w-[98%] mx-auto flex justify-end pt-2">
-                    <Button
-                        onClick={() => setOpenModal(true)}
-                        className="bg-[#8b6f47] hover:bg-[#6b4c2e] text-white rounded px-6 py-2 mb-4 items-end"
-                    >
-                        + Add Product
-                    </Button>
-                </div>
+          <Button
+            onClick={() => setOpenModal(true)}
+            className="bg-[#8b6f47] hover:bg-[#6b4c2e] text-white rounded px-6 py-2 mb-4 items-end"
+          >
+            + Add Product
+          </Button>
+        </div>
       )}
-      <CreateProductModal  mode='create' open={openModal} onClose={() => setOpenModal(false)} />
+      <CreateProductModal mode='create' open={openModal} onClose={() => setOpenModal(false)} />
 
+      {/* recommended */}
+      {/* <div>
 
-      <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-        {isLoading && <p>Loading...</p>}
-        {data?.data?.data?.map((product: Product) => (
-          <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
-            <ProductCard data={product} />
-          </Link>
-        ))}
+</div> */}
+      <div className="flex flex-col ">
+        <div className="w-full md:w-[98%] mx-auto flex justify-between items-center">
+          <h2 className="text-2xl">Recommended for you</h2>
+          <Link href={'/recommended-products'} className="text-lg underline">View all </Link>
+        </div>
+        <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 ">
+          {isLoading && <p>Loading...</p>}
+          {data?.data?.data?.slice(0, 4)?.map((product: Product) => (
+            <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
+              <ProductCard data={product} />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <div className="w-full md:w-[98%] mx-auto flex justify-between items-center">
+          <h2 className="text-2xl">All Products</h2>
+          <Link href={'/product/all-products'} className="text-lg underline">View all </Link>
+        </div>
+        <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+          {isLoading && <p>Loading...</p>}
+          {data?.data?.data?.slice(0, 4)?.map((product: Product) => (
+            <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
+              <ProductCard data={product} />
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -2,12 +2,11 @@
 import { CreateProductModal } from "@/components/common/CreateProduct";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getAllProducts, getProductByUserId, updateUserInteractions } from "@/lib/api/api";
+import { getProductByUserId, updateUserInteractions } from "@/lib/api/api";
 import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
 import { InteractionData } from "@/lib/types/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -21,7 +20,7 @@ export default function MyProducts() {
     const [categories, setCategories] = useState<string[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const searchParams = useSearchParams();
-  const router = useRouter()
+    const router = useRouter()
 
     const user = useUserStore((state) => state.user.user);
     const isLoggedIn = !!user.id;
@@ -43,7 +42,7 @@ export default function MyProducts() {
 
 
     const { data, isLoading } = useQuery({
-        queryKey: ['my-products', page, pageSize, search, categories],
+        queryKey: ['products', page, pageSize, search, categories],
         queryFn: () => getProductByUserId({ paginationData: { page, pageSize, search, categories } }),
     })
 
@@ -83,7 +82,7 @@ export default function MyProducts() {
         if (search.trim()) {
             params.set("search", search)
         }
-            router.push(`?${params.toString()}`)
+        router.push(`?${params.toString()}`)
 
     }
     const totalItems = data?.data?.meta.total_records || 0
@@ -111,31 +110,31 @@ export default function MyProducts() {
                         <ProductCard data={product} />
                     </Link>
                 ))}
-                
-                   
+
+
             </div>
-             <div className="flex justify-center gap-4 mt-6">
-                        <Button
-                            variant="outline"
-                            onClick={() => handlePageChange(page - 1)}
-                            disabled={page === 1}
-                        >
-                            Previous
-                        </Button>
+            <div className="flex justify-center gap-4 mt-6">
+                <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1}
+                >
+                    Previous
+                </Button>
 
-                        <span className="text-sm flex items-center">
-                            Page {page} of {totalPages || 1}
-                        </span>
+                <span className="text-sm flex items-center">
+                    Page {page} of {totalPages || 1}
+                </span>
 
-                        <Button
-                            variant="outline"
-                            onClick={() => handlePageChange(page + 1)}
-                            disabled={page >= totalPages}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                
+                <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page >= totalPages}
+                >
+                    Next
+                </Button>
+            </div>
+
         </>
     );
 }

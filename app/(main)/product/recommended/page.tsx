@@ -7,14 +7,13 @@ import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
 import { InteractionData } from "@/lib/types/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 // import { useSearchParams } from 'next/navigation';
 
-export default function MyProducts() {
+export default function RecommendedProducts() {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [pageSize, setPageSize] = useState(20);
@@ -43,7 +42,7 @@ export default function MyProducts() {
 
 
     const { data, isLoading } = useQuery({
-        queryKey: ['my-products', page, pageSize, search, categories],
+        queryKey: ['products', page, pageSize, search, categories],
         queryFn: () => getProductByUserId({ paginationData: { page, pageSize, search, categories } }),
     })
 
@@ -91,7 +90,7 @@ export default function MyProducts() {
 
     return (
         <>
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
                 <div className="w-full md:w-[98%] mx-auto flex justify-end">
                     <Button
                         onClick={() => setOpenModal(true)}
@@ -100,8 +99,8 @@ export default function MyProducts() {
                         + Add Product
                     </Button>
                 </div>
-            )}
-            <CreateProductModal mode='create' open={openModal} onClose={() => setOpenModal(false)} />
+            )} */}
+            {/* <CreateProductModal mode='create' open={openModal} onClose={() => setOpenModal(false)} /> */}
 
 
             <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">

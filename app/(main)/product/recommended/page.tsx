@@ -2,7 +2,7 @@
 import { CreateProductModal } from "@/components/common/CreateProduct";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getAllProducts, getProductByUserId, updateUserInteractions } from "@/lib/api/api";
+import { getAllProducts, getProductByUserId, recommendedProducts, updateUserInteractions } from "@/lib/api/api";
 import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
 import { InteractionData } from "@/lib/types/user";
@@ -42,8 +42,8 @@ export default function RecommendedProducts() {
 
 
     const { data, isLoading } = useQuery({
-        queryKey: ['products', page, pageSize, search, categories],
-        queryFn: () => getProductByUserId({ paginationData: { page, pageSize, search, categories } }),
+        queryKey: ['recommended-products', page, pageSize, search, categories],
+        queryFn: () => recommendedProducts({ paginationData: { page, pageSize, search, categories } }),
     })
 
     const { mutate } = useMutation({

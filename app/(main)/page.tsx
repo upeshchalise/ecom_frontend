@@ -98,7 +98,7 @@ export default function Home() {
       <div className="flex flex-col ">
         <div className="w-full md:w-[98%] mx-auto flex justify-between items-center">
           <h2 className="text-2xl">Recommended for you</h2>
-          <Link href={'/recommended-products'} className="text-lg underline">View all </Link>
+          <Link href={'/product/recommended'} className="text-lg underline">View all </Link>
         </div>
         <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 ">
           {isLoading && <p>Loading...</p>}

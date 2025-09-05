@@ -81,3 +81,10 @@ export const getProductByUserId = async( { paginationData }: { paginationData: P
     const response = await axiosInstance.get(`/products/user/my-products`, { params: paginationData });
     return response;
 }
+
+export const recommendedProducts = async({paginationData}: {paginationData: ProductPaginationRequest}): Promise<AxiosResponse<{data: Product[], meta: PaginationMeta}>> => {
+    const { categories, ...rest } = paginationData
+
+    const response = await axiosInstance.get("/user/recommended-products", {params: {...rest, categories: categories.join(",")}});
+    return response
+}

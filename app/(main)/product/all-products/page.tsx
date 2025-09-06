@@ -1,5 +1,6 @@
 'use client';
 import { CreateProductModal } from "@/components/common/CreateProduct";
+import NoData from "@/components/common/NoData";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
 import { getProductByUserId, updateUserInteractions } from "@/lib/api/api";
@@ -103,8 +104,9 @@ export default function MyProducts() {
             <CreateProductModal mode='create' open={openModal} onClose={() => setOpenModal(false)} />
 
 
+            {isLoading && <p>Loading...</p>}
+            {!data?.data?.data?.length && <NoData />}
             <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-                {isLoading && <p>Loading...</p>}
                 {data?.data?.data?.map((product: Product) => (
                     <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
                         <ProductCard data={product} />

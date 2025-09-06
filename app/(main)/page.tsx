@@ -1,8 +1,9 @@
 'use client';
 import { CreateProductModal } from "@/components/common/CreateProduct";
+import NoData from "@/components/common/NoData";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getAllProducts, updateUserInteractions } from "@/lib/api/api";
+import { getAllProducts, recommendedProducts, updateUserInteractions } from "@/lib/api/api";
 import { useUserStore } from "@/lib/store/user";
 import { Product } from "@/lib/types/response";
 import { InteractionData } from "@/lib/types/user";
@@ -43,6 +44,11 @@ export default function Home() {
     queryKey: ['products', page, pageSize, search, categories],
     queryFn: () => getAllProducts({ paginationData: { page, pageSize, search, categories } }),
   })
+
+  const { data: recommended, isLoading: recommendedLoading } = useQuery({
+          queryKey: ['recommended-products', page, pageSize, search, categories],
+          queryFn: () => recommendedProducts({ paginationData: { page, pageSize, search, categories } }),
+      })
 
   const { mutate } = useMutation({
     mutationFn: (interactionData: InteractionData) => updateUserInteractions(interactionData),
@@ -100,9 +106,10 @@ export default function Home() {
           <h2 className="text-2xl">Recommended for you</h2>
           <Link href={'/product/recommended'} className="text-lg underline">View all </Link>
         </div>
+          {recommendedLoading && <p>Loading...</p>}
+          {!recommended?.data?.data?.length && <NoData />}
         <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 ">
-          {isLoading && <p>Loading...</p>}
-          {data?.data?.data?.slice(0, 4)?.map((product: Product) => (
+          { recommended?.data?.data?.slice(0, 4)?.map((product: Product) => (
             <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
               <ProductCard data={product} />
             </Link>
@@ -115,8 +122,9 @@ export default function Home() {
           <h2 className="text-2xl">All Products</h2>
           <Link href={'/product/all-products'} className="text-lg underline">View all </Link>
         </div>
-        <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
           {isLoading && <p>Loading...</p>}
+          {!data?.data?.data?.length && <NoData />}
+        <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
           {data?.data?.data?.slice(0, 4)?.map((product: Product) => (
             <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
               <ProductCard data={product} />

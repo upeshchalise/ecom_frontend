@@ -1,5 +1,6 @@
 'use client';
 import { CreateProductModal } from "@/components/common/CreateProduct";
+import NoData from "@/components/common/NoData";
 import { ProductCard } from "@/components/common/ProductCard";
 import { Button } from "@/components/ui/button";
 import { getAllProducts, getProductByUserId, recommendedProducts, updateUserInteractions } from "@/lib/api/api";
@@ -18,9 +19,8 @@ export default function RecommendedProducts() {
     const [search, setSearch] = useState("");
     const [pageSize, setPageSize] = useState(20);
     const [categories, setCategories] = useState<string[]>([]);
-    const [openModal, setOpenModal] = useState(false);
     const searchParams = useSearchParams();
-  const router = useRouter()
+    const router = useRouter()
 
     const user = useUserStore((state) => state.user.user);
     const isLoggedIn = !!user.id;
@@ -82,7 +82,7 @@ export default function RecommendedProducts() {
         if (search.trim()) {
             params.set("search", search)
         }
-            router.push(`?${params.toString()}`)
+        router.push(`?${params.toString()}`)
 
     }
     const totalItems = data?.data?.meta.total_records || 0
@@ -102,39 +102,39 @@ export default function RecommendedProducts() {
             )} */}
             {/* <CreateProductModal mode='create' open={openModal} onClose={() => setOpenModal(false)} /> */}
 
-
+            {isLoading && <p>Loading...</p>}
+            {!data?.data?.data?.length && <NoData />}
             <div className="w-full md:w-[98%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-                {isLoading && <p>Loading...</p>}
                 {data?.data?.data?.map((product: Product) => (
                     <Link href={`/product/${product.id}`} key={product.id} onClick={() => handleMutation(product.id)}>
                         <ProductCard data={product} />
                     </Link>
                 ))}
-                
-                   
+
+
             </div>
-             <div className="flex justify-center gap-4 mt-6">
-                        <Button
-                            variant="outline"
-                            onClick={() => handlePageChange(page - 1)}
-                            disabled={page === 1}
-                        >
-                            Previous
-                        </Button>
+            <div className="flex justify-center gap-4 mt-6">
+                <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1}
+                >
+                    Previous
+                </Button>
 
-                        <span className="text-sm flex items-center">
-                            Page {page} of {totalPages || 1}
-                        </span>
+                <span className="text-sm flex items-center">
+                    Page {page} of {totalPages || 1}
+                </span>
 
-                        <Button
-                            variant="outline"
-                            onClick={() => handlePageChange(page + 1)}
-                            disabled={page >= totalPages}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                
+                <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page >= totalPages}
+                >
+                    Next
+                </Button>
+            </div>
+
         </>
     );
 }

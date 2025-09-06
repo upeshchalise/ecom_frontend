@@ -19,7 +19,7 @@ interface Props {
 
 export const PaymentMethod = ({ cart, setIsCartOpen }: Props) => {
     const router = useRouter();
-    const [paymentMethod, setPaymentMethod] = useState("khalti");
+    const [paymentMethod, setPaymentMethod] = useState("esewa");
 
     const setCheckout = useCheckoutStore((state) => state.addItem);
     const clearCheckout = useCheckoutStore((state) => state.clearCheckoutItem);
@@ -59,18 +59,18 @@ return (
                     </Label>
                 </div>
 
-                <div className="flex items-center space-x-3 rounded-md border p-3 cursor-pointer">
+                {/* <div className="flex items-center space-x-3 rounded-md border p-3 cursor-pointer">
                     <RadioGroupItem value="khalti" id="khalti" className="" />
                     <Label htmlFor="khalti" className="flex items-center space-x-2 cursor-pointer w-full">
                         <span className="w-3 h-3 rounded-full bg-purple-500 inline-block"></span>
                         <span>Khalti</span>
                     </Label>
-                </div>
+                </div> */}
             </RadioGroup>
             <DialogPrimitive.Close asChild>
 
                 <Button className="w-full mt-4" onClick={handleCheckout}>
-                    Pay with {paymentMethod === "esewa" ? "eSewa" : "Khalti"}
+                    Pay with "esewa"
                 </Button>
             </DialogPrimitive.Close>
         </DialogContent>
